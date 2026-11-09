@@ -1,0 +1,35 @@
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+
+module.exports = {
+  // 1. Definição do comando que o Discord enxerga
+  data: new SlashCommandBuilder()
+    .addStringOption(option =>
+      option.setName('motivo')
+        .setDescription('Digite o motivo')
+        .setRequired(true) // Obriga o usuário a preencher
+    )
+    .addUserOption(option =>
+      option.setName('membro')
+        .setDescription('Selecione o membro')
+        .setRequired(true)
+    )
+    .setName('nome-do-comando') // Apenas letras minúsculas e hífens
+    .setDescription('Descrição do que o comando faz')
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages), // Opcional: restringe a permissão
+
+
+  // 2. A lógica executada quando alguém usa o comando
+  async execute(interaction) {
+    // Pegar informações do usuário/canal
+    const motivo = interaction.options.getString('motivo');
+    const membro = interaction.options.getUser('membro');
+    const usuario = interaction.user;
+
+    // Responder no Discord (obrigatorio)
+    await interaction.reply({
+      content: `Olá <@${usuario.id}>, este é um comando personalizado!`,
+      ephemeral: true // true = só quem usou enxerga | false = público
+    });
+  },
+};
+
